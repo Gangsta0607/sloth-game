@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://b7qxjtkkkrb1w"]
+
+[ext_resource type="Script" uid="uid://bvjrfgup6avi2" path="res://sloth.gd" id="1_e6ysb"]
+[ext_resource type="Texture2D" uid="uid://boi4dxwiojhms" path="res://sloth/sloth.png" id="2_lng3k"]
+[ext_resource type="Texture2D" uid="uid://ncs8v6v5s4vt" path="res://sloth/attacking.png" id="4_ew650"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e6ysb"]
+size = Vector2(40, 140)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w56g4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_lng3k")
+}],
+"loop": true,
+"name": &"moving",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_ew650")
+}],
+"loop": true,
+"name": &"sitting",
+"speed": 5.0
+}]
+
+[node name="Sloth" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_e6ysb")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-30, 5)
+shape = SubResource("RectangleShape2D_e6ysb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_w56g4")
+animation = &"sitting"
+frame_progress = 0.61099

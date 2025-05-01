@@ -1,0 +1,98 @@
+[gd_scene load_steps=7 format=3 uid="uid://c18yq1obrfmse"]
+
+[ext_resource type="Texture2D" uid="uid://b1kmfug8qwt44" path="res://background_blurred.png" id="1_ak2if"]
+[ext_resource type="Script" uid="uid://cqr3gyrq31g2n" path="res://title_screen.gd" id="1_ig5kc"]
+[ext_resource type="FontFile" uid="uid://bqfe4alyljdui" path="res://fonts/Silkscreen-Bold.ttf" id="2_ig5kc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_05l2w"]
+font = ExtResource("2_ig5kc")
+font_size = 100
+
+[sub_resource type="Shader" id="Shader_ig5kc"]
+code = "shader_type canvas_item;
+
+uniform float blur_amount : hint_range(0, 10) = 3.0;
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+void fragment() {
+    vec4 sum = vec4(0.0);
+    vec2 pixel_size = 1.0 / vec2(textureSize(screen_texture, 0));
+    
+    for (int i = -4; i <= 4; i++) {
+        for (int j = -4; j <= 4; j++) {
+            sum += texture(screen_texture, SCREEN_UV + vec2(float(i), float(j)) * pixel_size * blur_amount);
+        }
+    }
+    COLOR = sum / 81.0; // 9x9 samples
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hafda"]
+shader = SubResource("Shader_ig5kc")
+shader_parameter/blur_amount = 3.0
+
+[node name="TItleScreen" type="CanvasLayer"]
+script = ExtResource("1_ig5kc")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -400.0
+offset_right = 624.0
+offset_bottom = 1024.0
+scale = Vector2(1.17, 1.17)
+texture = ExtResource("1_ak2if")
+
+[node name="StartButton" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.669
+anchor_right = 0.5
+anchor_bottom = 0.669
+offset_left = -145.0
+offset_top = -64.512
+offset_right = 143.0
+offset_bottom = 46.488
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_ig5kc")
+theme_override_font_sizes/font_size = 80
+text = "PLAY"
+
+[node name="ExitButton" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.833
+anchor_right = 0.5
+anchor_bottom = 0.833
+offset_left = -126.0
+offset_top = -47.7841
+offset_right = 122.0
+offset_bottom = 63.2159
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_ig5kc")
+theme_override_font_sizes/font_size = 80
+text = "EXIT
+"
+
+[node name="GameTitle" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -321.0
+offset_top = -9.0
+offset_right = 322.0
+offset_bottom = 774.0
+grow_horizontal = 2
+text = "A FUCKIN SLOTH BUG KILLER
+"
+label_settings = SubResource("LabelSettings_05l2w")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="BackBufferCopy"]
+material = SubResource("ShaderMaterial_hafda")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]

@@ -1,0 +1,90 @@
+[gd_scene load_steps=11 format=3 uid="uid://c5bw38d3lcvo7"]
+
+[ext_resource type="Script" uid="uid://bldpeyja2bs75" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://b7qxjtkkkrb1w" path="res://sloth.tscn" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://ctffnltueqefm" path="res://tree.png" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://3hl540qr1vbr" path="res://bug.tscn" id="2_1bvp3"]
+[ext_resource type="FontFile" uid="uid://x7vy1jyquhg8" path="res://fonts/Silkscreen-Regular.ttf" id="5_7mycd"]
+[ext_resource type="Texture2D" uid="uid://csggqw2payxgd" path="res://background.png" id="5_lquwl"]
+[ext_resource type="FontFile" uid="uid://bqfe4alyljdui" path="res://fonts/Silkscreen-Bold.ttf" id="7_272bh"]
+
+[sub_resource type="Curve2D" id="Curve2D_0xm2m"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -16, -601, 0, 0, 0, 0, -21, 5)
+}
+point_count = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_1bvp3"]
+font = ExtResource("5_7mycd")
+font_size = 50
+
+[sub_resource type="LabelSettings" id="LabelSettings_5vw27"]
+font = ExtResource("7_272bh")
+font_size = 90
+
+[node name="Main" type="Node"]
+script = ExtResource("1_h2yge")
+mob_scene = ExtResource("2_1bvp3")
+
+[node name="Sloth" parent="." instance=ExtResource("1_ig7tw")]
+top_level = true
+
+[node name="SpawnTimer" type="Timer" parent="."]
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(200, 600)
+curve = SubResource("Curve2D_0xm2m")
+
+[node name="Tree1" type="Sprite2D" parent="."]
+position = Vector2(200, 600)
+scale = Vector2(0.8, 2.7)
+texture = ExtResource("2_0xm2m")
+
+[node name="Tree2" type="Sprite2D" parent="."]
+position = Vector2(400, 600)
+scale = Vector2(0.8, 2.7)
+texture = ExtResource("2_0xm2m")
+
+[node name="Tree3" type="Sprite2D" parent="."]
+position = Vector2(600, 600)
+scale = Vector2(0.8, 2.7)
+texture = ExtResource("2_0xm2m")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 40.0
+offset_bottom = 62.0
+text = "0"
+label_settings = SubResource("LabelSettings_1bvp3")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -1
+offset_left = -400.0
+offset_right = 624.0
+offset_bottom = 1024.0
+scale = Vector2(1.17, 1.17)
+texture = ExtResource("5_lquwl")
+
+[node name="PauseLabel" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -170.0
+offset_top = -51.5
+offset_right = 170.0
+offset_bottom = 51.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "PAUSE"
+label_settings = SubResource("LabelSettings_5vw27")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="body_entered" from="Sloth" to="." method="_on_sloth_body_entered"]
